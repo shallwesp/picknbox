@@ -138,7 +138,6 @@
         ${p.feature?`<p class="feat">${esc(p.feature)}</p>`:''}
         <div class="tags">${p.tags.map(t => `<span>#${esc(t)}</span>`).join('')}</div>
         <div class="price"><span class="v">${esc(p.price)}</span></div>
-        <div class="sum"><div><b>추천</b><span>${esc(p.recommend_one)}</span></div><div><b>꼭 알 것</b><span>${esc(p.must_know)}</span></div></div>
         ${cta(p, '날짜별 요금 보기')}</section>
       ${legal}`;
     $dock.innerHTML = `<div class="dock">${cta(p, '남은 객실·최신 가격 보러가기', true)}</div>`;
