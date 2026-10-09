@@ -137,7 +137,7 @@
       <section class="card"><span class="rg2">📍 ${esc(p.addr)}</span><h1 class="nm">${esc(p.name)}</h1>
         ${p.feature?`<p class="feat">${esc(p.feature)}</p>`:''}
         <div class="tags">${p.tags.map(t => `<span>#${esc(t)}</span>`).join('')}</div>
-        <div class="price"><span class="k">쿠팡트래블 최저가</span><span class="v">${esc(p.price)}</span></div>
+        <div class="price"><span class="v">${esc(p.price)}</span></div>
         <div class="sum"><div><b>추천</b><span>${esc(p.recommend_one)}</span></div><div><b>꼭 알 것</b><span>${esc(p.must_know)}</span></div></div>
         ${cta(p, '날짜별 요금 보기')}</section>
       ${legal}`;
