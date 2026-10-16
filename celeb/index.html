@@ -1,10 +1,10 @@
 <!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>셀럽픽 | picknbox</title>
+<title>스타햄찌 | picknbox</title>
 <meta name="description" content="방송·유튜브에서 연예인이 직접 쓴다고 말한 아이템을 이름·상품·브랜드로 찾아보세요.">
-<meta property="og:title" content="셀럽픽 — 연예인이 직접 쓰는 아이템"><meta property="og:description" content="방송·유튜브에서 직접 말한 그 제품만 모았어요">
+<meta property="og:title" content="스타햄찌 — 연예인이 직접 쓰는 아이템"><meta property="og:description" content="방송·유튜브에서 직접 말한 그 제품만 모았어요">
 <meta name="theme-color" content="#F7ECEF">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%92%84%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%90%B9%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <style>
   /* travel(청록)과 같은 틀, 셀럽관 전용 톤: 로즈 + 모래색 */
@@ -168,9 +168,9 @@
     document.getElementById('x').hidden = !st.q;
   }
   function home(){
-    document.title = '셀럽픽 | picknbox';
+    document.title = '스타햄찌 | picknbox';
     $dock.innerHTML = ''; $app.classList.remove('has-dock');
-    $v.innerHTML = `<div class="topbar"><span class="t">💄 셀럽픽</span><span class="d">${D.items.length}개</span></div>
+    $v.innerHTML = `<div class="topbar"><span class="t">🐹 스타햄찌</span></div>
       <div class="hero"><span class="pill">방송·유튜브에서 직접 말한 그 제품</span><h1>연예인이 쓰는 아이템,<br>여기서 찾아요</h1>
         <p>이름·상품·브랜드로 검색하고 쿠팡에서 바로 확인하세요.</p></div>
       <label class="search">${glass}<input id="q" type="search" placeholder="예: 태연 파운데이션, 향수, 이효리" autocomplete="off" enterkeyhint="search" value="${esc(st.q)}">
@@ -190,12 +190,12 @@
   function detail(id){
     const p = D.items.find(x => String(x.id) === String(id));
     if(!p){ home(); return; }
-    document.title = p.celeb + ' ' + (p.name || p.title) + ' | 셀럽픽';
+    document.title = p.celeb + ' ' + (p.name || p.title) + ' | 스타햄찌';
     const back = st.q.trim() ? '#/q/' + encodeURIComponent(st.q.trim()) : '#/';
     const rel = D.items.filter(x => x.celeb === p.celeb && x.id !== p.id).slice(0, 6);
     const label = p.kind === 'search' ? '💰 쿠팡에서 가격 비교하기' : '💰 오늘 최저가 확인하기';
     const out = `href="${esc(p.link)}" target="_blank" rel="noopener sponsored nofollow"`;
-    $v.innerHTML = `<div class="topbar"><span class="t"><a class="back" href="${back}" aria-label="목록으로">‹</a>${esc(p.celeb)}</span><span class="d">셀럽픽</span></div>
+    $v.innerHTML = `<div class="topbar"><span class="t"><a class="back" href="${back}" aria-label="목록으로">‹</a>${esc(p.celeb)}</span><span class="d">스타햄찌</span></div>
       ${p.photo ? `<div class="gallery"><img src="${esc(p.photo)}" alt="${esc(p.celeb + ' ' + (p.name || p.title))}"><span class="hookq">“${esc(p.title)}”</span><a class="pgo" ${out}>💰 가격 보기${arrow}</a></div>` : ''}
       <section class="card"><span class="rg2">${esc(p.cat)}</span>
         <h1 class="nm">${esc(p.kind === 'product' ? p.name : p.title)}</h1>
