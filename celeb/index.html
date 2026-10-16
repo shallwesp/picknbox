@@ -58,14 +58,15 @@
   .chip[aria-pressed=true] small{color:rgba(255,255,255,.8)}
   .cnt{font-size:12.5px;color:var(--mute);padding:0 4px;margin-top:-4px}
   .list{display:grid;gap:14px}
-  .item{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:0 12px 30px rgba(120,30,60,.08)}
-  .item .go{display:block;text-decoration:none;min-width:0}
+  .item{display:block;text-decoration:none;color:inherit;background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:0 12px 30px rgba(120,30,60,.08)}
+  .item .go,.item .ph,.item .b{display:block;min-width:0}
   .item .ph{position:relative}
   .item img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;background:#F3E8EC}
-  .badge{position:absolute;left:12px;top:12px;background:rgba(255,255,255,.94);color:var(--ink);font-size:12px;font-weight:800;padding:5px 11px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.12)}
+  .badge{position:absolute;left:12px;top:12px;display:flex;gap:5px;align-items:center;background:rgba(255,255,255,.94);color:var(--ink);font-size:12px;font-weight:800;padding:5px 11px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.12)}
   .item .b{padding:14px 16px 16px;display:flex;flex-direction:column;gap:3px}
   .item .rg{font-size:12px;font-weight:700;color:var(--brand);display:flex;gap:6px;align-items:center}
-  .item .rg i{font-style:normal;font-weight:500;color:var(--mute)}
+  .item .rg i,.badge i{font-style:normal;font-weight:500;color:var(--mute)}
+  .badge{color:var(--brand)}
   .item .nm{font-size:17px;font-weight:900;letter-spacing:-.4px;line-height:1.35;word-break:keep-all}
   .item .ft{font-size:13.5px;color:var(--ink-2);word-break:keep-all}
   .item.mini{display:flex;align-items:center}
@@ -146,14 +147,14 @@
       h = h.replace(re, m => '<mark>' + m + '</mark>'); });
     return h;
   }
+  // 카드 전체가 쿠팡 링크 — 상세(#/p/No)를 거치지 않고 바로 열림. 상품 상세명은 숨기고 검색에만 씀
   function card(p, words){
-    const ph = p.photo ? `<div class="ph"><img src="${esc(p.photo)}" alt="${esc(p.celeb + ' ' + (p.name || p.title))}" loading="lazy"><span class="badge">▶ 영상 속 그 제품</span></div>` : '';
-    const out = `href="${esc(p.link)}" target="_blank" rel="noopener sponsored nofollow"`;
-    const buy = p.photo ? cta(p, p.kind === 'search' ? '💰 쿠팡에서 가격 비교하기' : '💰 오늘 쿠팡 가격 확인하기')
-      : `<a class="pchip" ${out} aria-label="${esc(p.title)} 쿠팡 가격 보기"><span>가격 보기</span><small>쿠팡 ›</small></a>`;
-    return `<div class="item${p.photo ? '' : ' mini'}"><a class="go" href="#/p/${p.id}">${ph}
-      <div class="b"><span class="rg">${hl(p.celeb, words)}<i>· ${esc(p.cat)}</i></span><span class="nm">${hl(p.title, words)}</span>
-        <span class="ft">${hl(prodLine(p), words)}</span></div></a>${buy}</div>`;
+    const who = `${hl(p.celeb, words)}<i>· ${esc(p.cat)}</i>`;
+    const ph = p.photo ? `<div class="ph"><img src="${esc(p.photo)}" alt="${esc(p.celeb + ' ' + (p.name || p.title))}" loading="lazy"><span class="badge">${who}</span></div>` : '';
+    const buy = p.photo ? `<span class="btn"><span>최저가 확인하기</span>${arrow}</span>`
+      : `<span class="pchip"><span>가격 보기</span><small>쿠팡 ›</small></span>`;
+    return `<a class="item${p.photo ? '' : ' mini'}" href="${esc(p.link)}" target="_blank" rel="noopener sponsored nofollow"><span class="go">${ph}
+      <span class="b">${p.photo ? '' : `<span class="rg">${who}</span>`}<span class="nm">${hl(p.title, words)}</span></span></span>${buy}</a>`;
   }
   function results(){
     const words = st.q.trim().split(/\s+/).filter(Boolean).map(norm);
