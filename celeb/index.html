@@ -58,7 +58,8 @@
   .chip[aria-pressed=true] small{color:rgba(255,255,255,.8)}
   .cnt{font-size:12.5px;color:var(--mute);padding:0 4px;margin-top:-4px}
   .list{display:grid;gap:14px}
-  .item{display:block;background:var(--card);border-radius:var(--radius);overflow:hidden;text-decoration:none;box-shadow:0 12px 30px rgba(120,30,60,.08)}
+  .item{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:0 12px 30px rgba(120,30,60,.08)}
+  .item .go{display:block;text-decoration:none;min-width:0}
   .item .ph{position:relative}
   .item img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;background:#F3E8EC}
   .badge{position:absolute;left:12px;top:12px;background:rgba(255,255,255,.94);color:var(--ink);font-size:12px;font-weight:800;padding:5px 11px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.12)}
@@ -67,14 +68,31 @@
   .item .rg i{font-style:normal;font-weight:500;color:var(--mute)}
   .item .nm{font-size:17px;font-weight:900;letter-spacing:-.4px;line-height:1.35;word-break:keep-all}
   .item .ft{font-size:13.5px;color:var(--ink-2);word-break:keep-all}
-  .item.mini .b{padding:13px 16px}
+  .item.mini{display:flex;align-items:center}
+  .item.mini .go{flex:1}
+  .item.mini .b{padding:13px 10px 13px 16px}
   .item.mini .nm{font-size:15.5px}
+  /* 가격 후킹 버튼 — 사진 카드: 카드 아래 꽉 찬 빨간 버튼 / 글자 카드: 오른쪽 빨간 알약 */
+  .item .btn{margin:0 14px 14px;font-size:15.5px;padding:14px;border-radius:14px}
+  .pchip{flex:none;margin-right:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-width:66px;text-decoration:none;
+         color:#fff;background:linear-gradient(135deg,#FF5A5C,#C40A26);border-radius:14px;padding:9px 10px;font-weight:900;font-size:13px;line-height:1.2;
+         box-shadow:0 6px 14px rgba(200,20,40,.28)}
+  .pchip small{font-size:10.5px;font-weight:700;opacity:.9}
+  .pchip:active,.btn:active{transform:scale(.97)}
   mark{background:#FFE58A;color:inherit;border-radius:3px;padding:0 1px}
   .empty{text-align:center;color:var(--ink-2);background:#fff;border-radius:var(--radius);padding:28px 16px;font-size:14px}
   .more{border:0;cursor:pointer;background:#fff;border-radius:14px;padding:13px;font-weight:700;font-size:14px;color:var(--ink-2);box-shadow:0 6px 16px rgba(120,30,60,.06)}
   /* 상세 */
   .gallery{position:relative;border-radius:var(--radius);overflow:hidden;background:#F3E8EC;box-shadow:0 14px 34px rgba(120,30,60,.14)}
   .gallery img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover}
+  .gallery .pgo{position:absolute;right:12px;bottom:12px;display:flex;align-items:center;gap:4px;text-decoration:none;color:#fff;font-size:13px;font-weight:800;
+       background:linear-gradient(135deg,#FF5A5C,#C40A26);padding:7px 12px;border-radius:999px;box-shadow:0 8px 18px rgba(200,20,40,.35)}
+  .gallery .pgo svg{width:11px;height:11px}
+  .price{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid var(--line);padding-top:12px}
+  .price .k{font-size:14px;font-weight:700;color:var(--ink-2)}
+  .price .v{display:flex;align-items:center;gap:4px;font-size:20px;font-weight:900;letter-spacing:-.5px;color:#E8273A;text-decoration:none}
+  .price .v svg{width:13px;height:13px}
+  .pnote{font-size:12px;color:var(--mute);margin-top:-6px}
   .hookq{position:absolute;left:12px;top:12px;max-width:80%;background:rgba(255,255,255,.94);color:var(--ink);font-size:13px;font-weight:800;padding:6px 12px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.12);word-break:keep-all}
   .card{background:var(--card);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 26px rgba(120,30,60,.07)}
   .rg2{font-size:12.5px;font-weight:700;color:var(--brand)}
@@ -130,9 +148,12 @@
   }
   function card(p, words){
     const ph = p.photo ? `<div class="ph"><img src="${esc(p.photo)}" alt="${esc(p.celeb + ' ' + (p.name || p.title))}" loading="lazy"><span class="badge">▶ 영상 속 그 제품</span></div>` : '';
-    return `<a class="item${p.photo ? '' : ' mini'}" href="#/p/${p.id}">${ph}
+    const out = `href="${esc(p.link)}" target="_blank" rel="noopener sponsored nofollow"`;
+    const buy = p.photo ? cta(p, p.kind === 'search' ? '💰 쿠팡에서 가격 비교하기' : '💰 오늘 쿠팡 가격 확인하기')
+      : `<a class="pchip" ${out} aria-label="${esc(p.title)} 쿠팡 가격 보기"><span>가격 보기</span><small>쿠팡 ›</small></a>`;
+    return `<div class="item${p.photo ? '' : ' mini'}"><a class="go" href="#/p/${p.id}">${ph}
       <div class="b"><span class="rg">${hl(p.celeb, words)}<i>· ${esc(p.cat)}</i></span><span class="nm">${hl(p.title, words)}</span>
-        <span class="ft">${hl(prodLine(p), words)}</span></div></a>`;
+        <span class="ft">${hl(prodLine(p), words)}</span></div></a>${buy}</div>`;
   }
   function results(){
     const words = st.q.trim().split(/\s+/).filter(Boolean).map(norm);
@@ -171,18 +192,21 @@
     document.title = p.celeb + ' ' + (p.name || p.title) + ' | 셀럽픽';
     const back = st.q.trim() ? '#/q/' + encodeURIComponent(st.q.trim()) : '#/';
     const rel = D.items.filter(x => x.celeb === p.celeb && x.id !== p.id).slice(0, 6);
-    const label = p.kind === 'search' ? '쿠팡에서 찾아보기' : '쿠팡에서 최저가 보기';
+    const label = p.kind === 'search' ? '💰 쿠팡에서 가격 비교하기' : '💰 오늘 최저가 확인하기';
+    const out = `href="${esc(p.link)}" target="_blank" rel="noopener sponsored nofollow"`;
     $v.innerHTML = `<div class="topbar"><span class="t"><a class="back" href="${back}" aria-label="목록으로">‹</a>${esc(p.celeb)}</span><span class="d">셀럽픽</span></div>
-      ${p.photo ? `<div class="gallery"><img src="${esc(p.photo)}" alt="${esc(p.celeb + ' ' + (p.name || p.title))}"><span class="hookq">“${esc(p.title)}”</span></div>` : ''}
+      ${p.photo ? `<div class="gallery"><img src="${esc(p.photo)}" alt="${esc(p.celeb + ' ' + (p.name || p.title))}"><span class="hookq">“${esc(p.title)}”</span><a class="pgo" ${out}>💰 가격 보기${arrow}</a></div>` : ''}
       <section class="card"><span class="rg2">${esc(p.cat)}</span>
         <h1 class="nm">${esc(p.kind === 'product' ? p.name : p.title)}</h1>
         ${p.kind === 'product' ? '' : `<p class="feat">${esc(prodLine(p))}</p>`}
         <div class="tags"><a href="#/q/${encodeURIComponent(p.celeb)}">#${esc(p.celeb)}</a>${p.brand ? `<a href="#/q/${encodeURIComponent(p.brand)}">#${esc(p.brand)}</a>` : ''}<a href="#/q/${encodeURIComponent(p.cat)}">#${esc(p.cat)}</a></div>
         <div class="sum"><div><b>누가</b><span>${esc(p.celeb)}</span></div><div><b>어떤 말</b><span>“${esc(p.title)}”</span></div>${p.brand ? `<div><b>브랜드</b><span>${esc(p.brand)}</span></div>` : ''}</div>
+        <div class="price"><span class="k">💰 쿠팡 오늘 가격</span><a class="v" ${out}>확인하기${arrow}</a></div>
+        <p class="pnote">가격은 매일 바뀌어요 · 로그인 없이 바로 볼 수 있어요</p>
         ${cta(p, label)}</section>
       ${rel.length ? `<h2>${esc(p.celeb)}의 다른 아이템</h2><div class="rel">${rel.map(x => card(x, [])).join('')}</div>` : ''}
       ${legal}`;
-    $dock.innerHTML = `<div class="dock">${cta(p, '지금 가격·재고 확인하기', true)}</div>`; $app.classList.add('has-dock');
+    $dock.innerHTML = `<div class="dock">${cta(p, '💰 지금 가격·남은 재고 보러가기', true)}</div>`; $app.classList.add('has-dock');
   }
   function route(){
     if(location.hash.startsWith('#q=')) { history.replaceState(null, '', '#/q/' + location.hash.slice(3)); }   // 예전 주소 호환
