@@ -160,7 +160,6 @@
     const words = st.q.trim().split(/\s+/).filter(Boolean).map(norm);
     const list = D.items.filter(p => (st.cat === '전체' || p.cat === st.cat) && words.every(w => p._t.includes(w)));
     const shown = list.slice(0, st.page * PER);
-    document.getElementById('cnt').textContent = st.q.trim() || st.cat !== '전체' ? `${list.length}개 찾았어요` : `전체 ${list.length}개 · 사진 있는 건 숏츠로 만든 제품이에요`;
     document.getElementById('list').innerHTML = shown.length ? shown.map(p => card(p, words)).join('')
       : `<div class="empty">“${esc(st.q)}” 검색 결과가 없어요.<br>연예인 이름이나 상품 종류로 다시 찾아보세요.</div>`;
     document.getElementById('more').hidden = shown.length >= list.length;
@@ -175,8 +174,7 @@
         <p>이름·상품·브랜드로 검색하고 쿠팡에서 바로 확인하세요.</p></div>
       <label class="search">${glass}<input id="q" type="search" placeholder="예: 태연 파운데이션, 향수, 이효리" autocomplete="off" enterkeyhint="search" value="${esc(st.q)}">
         <button class="x" id="x" type="button" aria-label="검색어 지우기">✕</button></label>
-      <div class="chips" role="toolbar" aria-label="카테고리">${cats.map(c => `<button class="chip" type="button" data-c="${esc(c)}" aria-pressed="false">${esc(c)}<small>${c === '전체' ? D.items.length : D.items.filter(p => p.cat === c).length}</small></button>`).join('')}</div>
-      <div class="cnt" id="cnt" aria-live="polite"></div>
+      <div class="chips" role="toolbar" aria-label="카테고리">${cats.map(c => `<button class="chip" type="button" data-c="${esc(c)}" aria-pressed="false">${esc(c)}</button>`).join('')}</div>
       <div class="list" id="list"></div>
       <button class="more" id="more" type="button">더 보기</button>${legal}`;
     const q = document.getElementById('q'); let t;
