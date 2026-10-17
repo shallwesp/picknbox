@@ -133,9 +133,9 @@
   const norm = s => String(s ?? '').toLowerCase().replace(/\s+/g, '');
   const arrow = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const glass = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
-  const legal = `<div class="legal"><p>가격·재고는 쿠팡 상품 페이지 기준이며 예고 없이 바뀔 수 있어요.<br>연예인 사용 정보는 방송·SNS 언급을 모은 것이에요.</p><p>${esc(D.site.disclosure).replace('일환으로, ', '일환으로,<br>')}</p></div>`;
+  const legal = `<div class="legal"><p>가격·재고는 판매 페이지 기준이며 예고 없이 바뀔 수 있어요.<br>연예인 사용 정보는 방송·SNS 언급을 모은 것이에요.</p><p>${esc(D.site.disclosure).replace('일환으로, ', '일환으로,<br>')}</p></div>`;
   const cta = (p, label, alt) => `<a class="btn${alt?' alt':''}" href="${esc(p.link)}" target="_blank" rel="noopener sponsored nofollow"><span>${esc(label)}</span>${arrow}</a>`;
-  const prodLine = p => p.kind === 'product' ? (p.brand && !norm(p.name).startsWith(norm(p.brand)) ? p.brand + ' · ' : '') + p.name : p.kind === 'search' ? '쿠팡 검색: ' + p.name : '쿠팡에서 상품 확인';
+  const prodLine = p => p.kind === 'product' ? (p.brand && !norm(p.name).startsWith(norm(p.brand)) ? p.brand + ' · ' : '') + p.name : p.kind === 'search' ? '검색: ' + p.name : '상품 확인하기';
   D.items.forEach(p => p._t = norm([p.celeb, p.title, p.brand, p.name, p.cat].join(' ')));
   const cats = ['전체', ...Object.entries(D.items.reduce((m, p) => (m[p.cat] = (m[p.cat] || 0) + 1, m), {})).sort((a, b) => b[1] - a[1]).map(x => x[0])];
   const PER = 30;
@@ -147,12 +147,12 @@
       h = h.replace(re, m => '<mark>' + m + '</mark>'); });
     return h;
   }
-  // 카드 전체가 쿠팡 링크 — 상세(#/p/No)를 거치지 않고 바로 열림. 상품 상세명은 숨기고 검색에만 씀
+  // 카드 전체가 판매처 링크 — 상세(#/p/No)를 거치지 않고 바로 열림. 상품 상세명은 숨기고 검색에만 씀
   function card(p, words){
     const who = `${hl(p.celeb, words)}<i>· ${esc(p.cat)}</i>`;
     const ph = p.photo ? `<div class="ph"><img src="${esc(p.photo)}" alt="${esc(p.celeb + ' ' + (p.name || p.title))}" loading="lazy"><span class="badge">${who}</span></div>` : '';
     const buy = p.photo ? `<span class="btn"><span>최저가 확인하기</span>${arrow}</span>`
-      : `<span class="pchip"><span>가격 보기</span><small>쿠팡 ›</small></span>`;
+      : `<span class="pchip"><span>가격 보기</span><small>바로가기 ›</small></span>`;
     return `<a class="item${p.photo ? '' : ' mini'}" href="${esc(p.link)}" target="_blank" rel="noopener sponsored nofollow"><span class="go">${ph}
       <span class="b">${p.photo ? '' : `<span class="rg">${who}</span>`}<span class="nm">${hl(p.title, words)}</span></span></span>${buy}</a>`;
   }
@@ -171,7 +171,7 @@
     $dock.innerHTML = ''; $app.classList.remove('has-dock');
     $v.innerHTML = `<div class="topbar"><span class="t">🐹 스타햄찌</span></div>
       <div class="hero"><span class="pill">방송·유튜브에서 직접 말한 그 제품</span><h1>연예인이 쓰는 아이템,<br>여기서 찾아요</h1>
-        <p>이름·상품·브랜드로 검색하고 쿠팡에서 바로 확인하세요.</p></div>
+        <p>이름·상품·브랜드로 검색하고 바로 확인하세요.</p></div>
       <label class="search">${glass}<input id="q" type="search" placeholder="예: 태연 파운데이션, 향수, 이효리" autocomplete="off" enterkeyhint="search" value="${esc(st.q)}">
         <button class="x" id="x" type="button" aria-label="검색어 지우기">✕</button></label>
       <div class="chips" role="toolbar" aria-label="카테고리">${cats.map(c => `<button class="chip" type="button" data-c="${esc(c)}" aria-pressed="false">${esc(c)}</button>`).join('')}</div>
@@ -191,7 +191,7 @@
     document.title = p.celeb + ' ' + (p.name || p.title) + ' | 스타햄찌';
     const back = st.q.trim() ? '#/q/' + encodeURIComponent(st.q.trim()) : '#/';
     const rel = D.items.filter(x => x.celeb === p.celeb && x.id !== p.id).slice(0, 6);
-    const label = p.kind === 'search' ? '💰 쿠팡에서 가격 비교하기' : '💰 오늘 최저가 확인하기';
+    const label = p.kind === 'search' ? '💰 가격 비교하기' : '💰 오늘 최저가 확인하기';
     const out = `href="${esc(p.link)}" target="_blank" rel="noopener sponsored nofollow"`;
     $v.innerHTML = `<div class="topbar"><span class="t"><a class="back" href="${back}" aria-label="목록으로">‹</a>${esc(p.celeb)}</span><span class="d">스타햄찌</span></div>
       ${p.photo ? `<div class="gallery"><img src="${esc(p.photo)}" alt="${esc(p.celeb + ' ' + (p.name || p.title))}"><span class="hookq">“${esc(p.title)}”</span><a class="pgo" ${out}>💰 가격 보기${arrow}</a></div>` : ''}
@@ -200,7 +200,7 @@
         ${p.kind === 'product' ? '' : `<p class="feat">${esc(prodLine(p))}</p>`}
         <div class="tags"><a href="#/q/${encodeURIComponent(p.celeb)}">#${esc(p.celeb)}</a>${p.brand ? `<a href="#/q/${encodeURIComponent(p.brand)}">#${esc(p.brand)}</a>` : ''}<a href="#/q/${encodeURIComponent(p.cat)}">#${esc(p.cat)}</a></div>
         <div class="sum"><div><b>누가</b><span>${esc(p.celeb)}</span></div><div><b>어떤 말</b><span>“${esc(p.title)}”</span></div>${p.brand ? `<div><b>브랜드</b><span>${esc(p.brand)}</span></div>` : ''}</div>
-        <div class="price"><span class="k">💰 쿠팡 오늘 가격</span><a class="v" ${out}>확인하기${arrow}</a></div>
+        <div class="price"><span class="k">💰 오늘 가격</span><a class="v" ${out}>확인하기${arrow}</a></div>
         <p class="pnote">가격은 매일 바뀌어요 · 로그인 없이 바로 볼 수 있어요</p>
         ${cta(p, label)}</section>
       ${rel.length ? `<h2>${esc(p.celeb)}의 다른 아이템</h2><div class="rel">${rel.map(x => card(x, [])).join('')}</div>` : ''}
