@@ -57,7 +57,7 @@
   .chip[aria-pressed=true]{background:var(--brand);color:#fff}
   .chip[aria-pressed=true] small{color:rgba(255,255,255,.8)}
   .cnt{font-size:12.5px;color:var(--mute);padding:0 4px;margin-top:-4px}
-  .list{display:grid;gap:14px}
+  .list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .item{display:block;text-decoration:none;color:inherit;background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:0 12px 30px rgba(120,30,60,.08)}
   .item .go,.item .ph,.item .b{display:block;min-width:0}
   .item .ph{position:relative}
@@ -79,6 +79,20 @@
          color:#fff;background:linear-gradient(135deg,#FF5A5C,#C40A26);border-radius:14px;padding:9px 10px;font-weight:900;font-size:13px;line-height:1.2;
          box-shadow:0 6px 14px rgba(200,20,40,.28)}
   .pchip small{font-size:10.5px;font-weight:700;opacity:.9}
+  /* 한 줄 2개 카드 */
+  .item{display:flex;flex-direction:column;border-radius:18px}
+  .item .go{flex:1}
+  .item img{aspect-ratio:1/1}
+  .badge{left:8px;top:8px;font-size:10.5px;padding:4px 8px;max-width:calc(100% - 16px);flex-wrap:wrap}
+  .badge i{display:none}
+  .item .b{padding:10px 10px 8px}
+  .item .nm{font-size:13.5px;letter-spacing:-.3px;line-height:1.35}
+  .item .btn{margin:0 10px 10px;font-size:13px;padding:10px 6px;border-radius:12px;gap:4px}
+  .item.mini{display:flex;flex-direction:column;align-items:stretch}
+  .item.mini .b{padding:12px 10px 8px}
+  .item.mini .nm{font-size:13.5px}
+  .item.mini .pchip{flex-direction:row;margin:0 10px 10px;min-width:0;padding:9px 6px;gap:4px;font-size:12.5px}
+  .item.mini .pchip small{display:none}
   .pchip:active,.btn:active{transform:scale(.97)}
   mark{background:#FFE58A;color:inherit;border-radius:3px;padding:0 1px}
   .empty{text-align:center;color:var(--ink-2);background:#fff;border-radius:var(--radius);padding:28px 16px;font-size:14px}
