@@ -57,43 +57,21 @@
   .chip[aria-pressed=true]{background:var(--brand);color:#fff}
   .chip[aria-pressed=true] small{color:rgba(255,255,255,.8)}
   .cnt{font-size:12.5px;color:var(--mute);padding:0 4px;margin-top:-4px}
-  .list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .item{display:block;text-decoration:none;color:inherit;background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:0 12px 30px rgba(120,30,60,.08)}
-  .item .go,.item .ph,.item .b{display:block;min-width:0}
-  .item .ph{position:relative}
-  .item img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;background:#F3E8EC}
-  .badge{position:absolute;left:12px;top:12px;display:flex;gap:5px;align-items:center;background:rgba(255,255,255,.94);color:var(--ink);font-size:12px;font-weight:800;padding:5px 11px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.12)}
-  .item .b{padding:14px 16px 16px;display:flex;flex-direction:column;gap:3px}
-  .item .rg{font-size:12px;font-weight:700;color:var(--brand);display:flex;gap:6px;align-items:center}
-  .item .rg i,.badge i{font-style:normal;font-weight:500;color:var(--mute)}
-  .badge{color:var(--brand)}
-  .item .nm{font-size:17px;font-weight:900;letter-spacing:-.4px;line-height:1.35;word-break:keep-all}
-  .item .ft{font-size:13.5px;color:var(--ink-2);word-break:keep-all}
-  .item.mini{display:flex;align-items:center}
-  .item.mini .go{flex:1}
-  .item.mini .b{padding:13px 10px 13px 16px}
-  .item.mini .nm{font-size:15.5px}
-  /* 가격 후킹 버튼 — 사진 카드: 카드 아래 꽉 찬 빨간 버튼 / 글자 카드: 오른쪽 빨간 알약 */
-  .item .btn{margin:0 14px 14px;font-size:15.5px;padding:14px;border-radius:14px}
-  .pchip{flex:none;margin-right:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-width:66px;text-decoration:none;
-         color:#fff;background:linear-gradient(135deg,#FF5A5C,#C40A26);border-radius:14px;padding:9px 10px;font-weight:900;font-size:13px;line-height:1.2;
-         box-shadow:0 6px 14px rgba(200,20,40,.28)}
-  .pchip small{font-size:10.5px;font-weight:700;opacity:.9}
-  /* 한 줄 2개 카드 */
-  .item{display:flex;flex-direction:column;border-radius:18px}
-  .item .go{flex:1}
-  .item img{aspect-ratio:1/1}
-  .badge{left:8px;top:8px;font-size:10.5px;padding:4px 8px;max-width:calc(100% - 16px);flex-wrap:wrap}
-  .badge i{display:none}
-  .item .b{padding:10px 10px 8px}
-  .item .nm{font-size:13.5px;letter-spacing:-.3px;line-height:1.35}
-  .item .btn{margin:0 10px 10px;font-size:13px;padding:10px 6px;border-radius:12px;gap:4px}
-  .item.mini{display:flex;flex-direction:column;align-items:stretch}
-  .item.mini .b{padding:12px 10px 8px}
-  .item.mini .nm{font-size:13.5px}
-  .item.mini .pchip{flex-direction:row;margin:0 10px 10px;min-width:0;padding:9px 6px;gap:4px;font-size:12.5px}
-  .item.mini .pchip small{display:none}
-  .pchip:active,.btn:active{transform:scale(.97)}
+  .list{display:grid;gap:10px}
+  /* 인포크링크식 가로 카드: 왼쪽 썸네일 + 가운데 글자 */
+  .item{display:flex;align-items:center;gap:10px;padding:8px;text-decoration:none;color:inherit;background:var(--card);border-radius:16px;box-shadow:0 6px 16px rgba(120,30,60,.08)}
+  .item:active{transform:scale(.98)}
+  .item .th{flex:none;width:58px;height:58px;border-radius:12px;overflow:hidden;background:#F3E8EC;display:flex;align-items:center;justify-content:center}
+  .item .th img{display:block;width:100%;height:100%;object-fit:cover}
+  .item .th.ph0{background:linear-gradient(135deg,#F7C6D6,#E58BA9);color:#fff;font-weight:900;font-size:22px}
+  .item .nm{flex:1;min-width:0;text-align:center;font-size:14.5px;font-weight:700;letter-spacing:-.3px;line-height:1.4;word-break:keep-all;padding-right:58px;
+            display:flex;flex-direction:column;gap:1px}
+  .item .nm small{font-size:12px;font-weight:500;color:var(--mute)}
+  /* 맨 위 쿠팡 파트너스 안내 띠 */
+  .notice{margin:-16px -16px 6px;background:#2B2B2B;color:#fff;overflow:hidden;white-space:nowrap;font-size:13px;font-weight:800;line-height:1;padding:11px 0}
+  .notice span{display:inline-block;padding-left:100%;animation:tick 22s linear infinite}
+  @keyframes tick{to{transform:translateX(-100%)}}
+  @media (prefers-reduced-motion:reduce){.notice span{animation:none;padding-left:16px}}
   mark{background:#FFE58A;color:inherit;border-radius:3px;padding:0 1px}
   .empty{text-align:center;color:var(--ink-2);background:#fff;border-radius:var(--radius);padding:28px 16px;font-size:14px}
   .more{border:0;cursor:pointer;background:#fff;border-radius:14px;padding:13px;font-weight:700;font-size:14px;color:var(--ink-2);box-shadow:0 6px 16px rgba(120,30,60,.06)}
@@ -163,12 +141,10 @@
   }
   // 카드 전체가 판매처 링크 — 상세(#/p/No)를 거치지 않고 바로 열림. 상품 상세명은 숨기고 검색에만 씀
   function card(p, words){
-    const who = `${hl(p.celeb, words)}<i>· ${esc(p.cat)}</i>`;
-    const ph = p.photo ? `<div class="ph"><img src="${esc(p.photo)}" alt="${esc(p.celeb + ' ' + (p.name || p.title))}" loading="lazy"><span class="badge">${who}</span></div>` : '';
-    const buy = p.photo ? `<span class="btn"><span>최저가 확인하기</span>${arrow}</span>`
-      : `<span class="pchip"><span>가격 보기</span><small>바로가기 ›</small></span>`;
-    return `<a class="item${p.photo ? '' : ' mini'}" href="${esc(p.link)}" target="_blank" rel="noopener sponsored nofollow"><span class="go">${ph}
-      <span class="b">${p.photo ? '' : `<span class="rg">${who}</span>`}<span class="nm">${hl(p.title, words)}</span></span></span>${buy}</a>`;
+    const th = p.photo ? `<span class="th"><img src="${esc(p.photo)}" alt="" loading="lazy"></span>`
+      : `<span class="th ph0">${esc((p.celeb || p.title).charAt(0))}</span>`;
+    return `<a class="item" href="${esc(p.link)}" target="_blank" rel="noopener sponsored nofollow">${th}
+      <span class="nm"><span>${hl(p.celeb, words)} ${hl(p.title, words)}</span></span></a>`;
   }
   function results(){
     const words = st.q.trim().split(/\s+/).filter(Boolean).map(norm);
@@ -183,7 +159,7 @@
   function home(){
     document.title = '스타햄찌 | picknbox';
     $dock.innerHTML = ''; $app.classList.remove('has-dock');
-    $v.innerHTML = `<div class="topbar"><span class="t">🐹 스타햄찌</span></div>
+    $v.innerHTML = `<div class="notice"><span>${esc(D.site.disclosure)}</span></div><div class="topbar"><span class="t">🐹 스타햄찌</span></div>
       <div class="hero"><span class="pill">방송·유튜브에서 직접 말한 그 제품</span><h1>연예인이 쓰는 아이템,<br>여기서 찾아요</h1>
         <p>이름·상품·브랜드로 검색하고 바로 확인하세요.</p></div>
       <label class="search">${glass}<input id="q" type="search" placeholder="예: 태연 파운데이션, 향수, 이효리" autocomplete="off" enterkeyhint="search" value="${esc(st.q)}">
