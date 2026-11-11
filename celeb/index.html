@@ -66,6 +66,9 @@
   .item .th.ph0{background:linear-gradient(135deg,#F7C6D6,#E58BA9);color:#fff;font-weight:900;font-size:22px}
   .item .nm{flex:1;min-width:0;text-align:center;font-size:14.5px;font-weight:700;letter-spacing:-.3px;line-height:1.4;word-break:keep-all;padding-right:58px;
             display:flex;flex-direction:column;gap:1px}
+  .item .nm .l1{display:block}
+  .item .nm .pt{display:block;margin-top:3px;font-size:15.5px;font-weight:900}
+  .item .nm .pt b{font-weight:900;background:linear-gradient(transparent 12%,#F2FF3A 12%,#F2FF3A 92%,transparent 92%);padding:1px 5px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
   .item .nm small{font-size:12px;font-weight:500;color:var(--mute)}
   /* 맨 위 쿠팡 파트너스 안내 띠 */
   .notice{margin:-16px -16px 6px;background:#2B2B2B;color:#fff;overflow:hidden;white-space:nowrap;font-size:13px;font-weight:800;line-height:1;padding:11px 0}
@@ -140,11 +143,18 @@
     return h;
   }
   // 카드 전체가 판매처 링크 — 상세(#/p/No)를 거치지 않고 바로 열림. 상품 상세명은 숨기고 검색에만 씀
+  // 제목 = 앞부분 + 소구점(뒤쪽 절반, 최대 3어절). 소구점은 줄을 바꿔 형광 노랑 박스로 강조
+  function nm(p, words){
+    const w = p.title.trim().split(/\s+/);
+    const k = w.length <= 1 ? w.length : Math.min(3, Math.ceil(w.length / 2));
+    const head = w.slice(0, w.length - k).join(' '), pt = w.slice(w.length - k).join(' ');
+    return `<span class="l1">${hl(p.celeb, words)}${head ? ' ' + hl(head, words) : ''}</span><span class="pt"><b>${hl(pt, words)}</b></span>`;
+  }
   function card(p, words){
     const th = p.photo ? `<span class="th"><img src="${esc(p.photo)}" alt="" loading="lazy"></span>`
       : `<span class="th ph0">${esc((p.celeb || p.title).charAt(0))}</span>`;
     return `<a class="item" href="${esc(p.link)}" target="_blank" rel="noopener sponsored nofollow">${th}
-      <span class="nm"><span>${hl(p.celeb, words)} ${hl(p.title, words)}</span></span></a>`;
+      <span class="nm">${nm(p, words)}</span></a>`;
   }
   function results(){
     const words = st.q.trim().split(/\s+/).filter(Boolean).map(norm);
