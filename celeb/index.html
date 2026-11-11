@@ -70,6 +70,15 @@
   .item .nm .pt{display:block;margin-top:3px;font-size:15.5px;font-weight:900}
   .item .nm .pt b{font-weight:900;background:linear-gradient(transparent 12%,#F2FF3A 12%,#F2FF3A 92%,transparent 92%);padding:1px 5px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
   .item .nm small{font-size:12px;font-weight:500;color:var(--mute)}
+  /* 유리창에 빛이 스치듯 찰랑이는 효과 */
+  .item{position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,255,255,.86));
+        box-shadow:0 6px 16px rgba(120,30,60,.08),inset 0 1px 0 #fff,inset 0 0 0 1px rgba(255,255,255,.7)}
+  .item::after{content:"";position:absolute;top:-30%;bottom:-30%;left:-45%;width:30%;z-index:2;pointer-events:none;transform:skewX(-20deg);
+        background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.5),rgba(255,255,255,0));
+        animation:glass 4.2s ease-in-out infinite;animation-delay:calc(var(--i,0) * .35s)}
+  .item>*{position:relative;z-index:1}
+  @keyframes glass{0%{left:-45%}45%,100%{left:130%}}
+  @media (prefers-reduced-motion:reduce){.item::after{animation:none;display:none}}
   /* 맨 위 쿠팡 파트너스 안내 띠 */
   .notice{margin:-16px -16px 6px;background:#2B2B2B;color:#fff;overflow:hidden;white-space:nowrap;font-size:13px;font-weight:800;line-height:1;padding:11px 0}
   .notice span{display:inline-block;padding-left:100%;animation:tick 22s linear infinite}
@@ -150,17 +159,17 @@
     const head = w.slice(0, w.length - k).join(' '), pt = w.slice(w.length - k).join(' ');
     return `<span class="l1">${hl(p.celeb, words)}${head ? ' ' + hl(head, words) : ''}</span><span class="pt"><b>${hl(pt, words)}</b></span>`;
   }
-  function card(p, words){
+  function card(p, words, i = 0){
     const th = p.photo ? `<span class="th"><img src="${esc(p.photo)}" alt="" loading="lazy"></span>`
       : `<span class="th ph0">${esc((p.celeb || p.title).charAt(0))}</span>`;
-    return `<a class="item" href="${esc(p.link)}" target="_blank" rel="noopener sponsored nofollow">${th}
+    return `<a class="item" style="--i:${i % 8}" href="${esc(p.link)}" target="_blank" rel="noopener sponsored nofollow">${th}
       <span class="nm">${nm(p, words)}</span></a>`;
   }
   function results(){
     const words = st.q.trim().split(/\s+/).filter(Boolean).map(norm);
     const list = D.items.filter(p => (st.cat === '전체' || p.cat === st.cat) && words.every(w => p._t.includes(w)));
     const shown = list.slice(0, st.page * PER);
-    document.getElementById('list').innerHTML = shown.length ? shown.map(p => card(p, words)).join('')
+    document.getElementById('list').innerHTML = shown.length ? shown.map((p, i) => card(p, words, i)).join('')
       : `<div class="empty">“${esc(st.q)}” 검색 결과가 없어요.<br>연예인 이름이나 상품 종류로 다시 찾아보세요.</div>`;
     document.getElementById('more').hidden = shown.length >= list.length;
     document.querySelectorAll('.chip').forEach(b => b.setAttribute('aria-pressed', b.dataset.c === st.cat));
